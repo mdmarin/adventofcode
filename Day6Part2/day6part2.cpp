@@ -69,16 +69,24 @@ int main(int argc, char** argv)
 	std::vector<mem_config> configs;
 	mem_config current(input, _countof(input));
 	int iterations = 0;
+	int loop_size = 0;
 
-	while (std::find(configs.begin(), configs.end(), current) == configs.end())
+	while (true)
 	{
+		auto iter = std::find(configs.begin(), configs.end(), current);
+		if (iter != configs.end())
+		{
+			loop_size = configs.end() - iter;
+			break;
+		}
+
 		configs.emplace_back(current);
 		
 		current.reallocate();
 		iterations++;
 	}
 
-	printf("Result: %d\n", iterations);
+	printf("Result: %d\n", loop_size);
 
 	return 0;
 }
